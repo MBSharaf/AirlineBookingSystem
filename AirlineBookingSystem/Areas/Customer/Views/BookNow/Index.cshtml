@@ -1,0 +1,184 @@
+﻿@using AirlineBookingSystem.ViewModels
+@model BookNowVM
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Shop Homepage - Start Bootstrap Template</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="~/css/customer/style.css" rel="stylesheet">
+</head>
+<body>
+    
+    <!-- Carousel Start -->
+    <div class="container-fluid p-0">
+        <div id="header-carousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="w-100" src="~/images/carousel-1.jpg" alt="Image">
+                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                        <div class="p-3" style="max-width: 900px;">
+                            <h4 class="text-white text-uppercase mb-md-3">Tours & Travel</h4>
+                            <h1 class="display-3 text-white mb-md-4">Let's Discover The World Together</h1>
+                            <a href="/Customer/BookNow/Index" class="btn btn-primary py-md-3 px-md-5 mt-2">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img class="w-100" src="~/images/carousel-2.jpg" alt="Image">
+                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                        <div class="p-3" style="max-width: 900px;">
+                            <h4 class="text-white text-uppercase mb-md-3">Tours & Travel</h4>
+                            <h1 class="display-3 text-white mb-md-4">Discover Amazing Places With Us</h1>
+                            <a href="/Customer/BookNow/Index" class="btn btn-primary py-md-3 px-md-5 mt-2">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
+                <div class="btn btn-dark" style="width: 45px; height: 45px;">
+                    <span class="carousel-control-prev-icon mb-n2"></span>
+                </div>
+            </a>
+            <a class="carousel-control-next" href="#header-carousel" data-slide="next">
+                <div class="btn btn-dark" style="width: 45px; height: 45px;">
+                    <span class="carousel-control-next-icon mb-n2"></span>
+                </div>
+            </a>
+        </div>
+    </div>
+    <!-- Carousel End -->
+    <!-- Search -->
+    <form asp-action="Index" method="get">
+
+        <div class="bg-white rounded-5 shadow-lg p-3">
+
+            <div class="row align-items-center">
+
+                <div class="col-lg-9">
+
+                    <div class="input-group">
+
+                        <span class="input-group-text bg-transparent border-0">
+
+                            <i class="bi bi-search fs-5 text-muted"></i>
+
+                        </span>
+
+                        <input type="search"
+                               class="form-control border-0 shadow-none fs-5"
+                               placeholder="Find your favorite stadium..."
+                               name="BookNowName"
+                               value="@ViewBag.BookNowName">
+
+                    </div>
+
+                </div>
+                <div class="col-lg-3">
+
+                    <div class="d-grid">
+
+                        <button type="submit"
+                                class="btn btn-success rounded-pill py-3">
+                            <i class="bi bi-search me-2"></i>
+                            Find a Journy
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+    <!-- Section-->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                
+                @foreach (var item in Model.Hotels)
+                    {
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Sale badge-->
+                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">@item.City</div>
+                            <!-- Product image-->
+                            <img class="card-img-top" src="~/images/@item.Image" alt="..." />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">@item.Name</h5>
+                                    <!-- Product reviews-->
+                                    <div class="d-flex justify-content-center small text-warning mb-2">
+                                        <!-- Rating -->
+
+                                        <div class="mb-3">
+
+                                            @for (var i = 0; i < Math.Round(item.Rate); i++)
+                                            {
+                                                <i class="bi bi-star-fill text-warning"></i>
+                                            }
+
+                                            @for (var i = 0; i < 5 - Math.Round(item.Rate); i++)
+                                            {
+                                                <i class="bi bi-star text-warning"></i>
+                                            }
+
+                                            <span class="ms-2 text-muted">
+
+                                                (@item.Rate)
+
+                                            </span>
+
+                                        </div>
+                                        </div>
+                                    <!-- Product price-->
+                                    <span class="text-muted">@item.Description</span>
+                                    <span class="text-muted">@item.Address</span>
+                                   
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="/Customer/BookNow/HotelDetails/@item.Id">Show Details</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+            </div>
+        </div>
+    </section>
+    <!-- Pagination-->
+    <div class="d-flex align-items-center justify-content-center p-3 border-top ">
+        <nav>
+            <ul class="pagination pagination-sm mb-0 ">
+                <li class="page-item @(Model.CurrentPage == 1 ? " disabled " : "")"><a class="page-link" href="/Customer/BookNow/Index?BookNowName=@ViewBag.BookNowName&page=@(Model.CurrentPage - 1)">Previous</a></li>
+                @for (var i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item accordion-body"><a class="page-link @(Model.CurrentPage == i ? "active" : "")" href="/Customer/BookNow/Index?BookNowName=@ViewBag.BookNowName&page=@i">@i</a></li>
+
+                }
+                <li class="page-item @(Model.CurrentPage == Model.TotalPages ? " disabled " : "")"><a class="page-link" href="/Customer/BookNow/Index?BookNowName=@ViewBag.BookNowName&page=@(Model.CurrentPage + 1)">Next</a></li>
+            </ul>
+        </nav>
+    </div>
+   
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="~/js/customer/storescripts.js"></script>
+</body>
+</html>
