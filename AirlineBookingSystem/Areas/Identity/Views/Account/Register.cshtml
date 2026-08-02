@@ -1,0 +1,113 @@
+﻿@using AirlineBookingSystem.ViewModels
+@model RegisterVM
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<link href="~/css/customer/style.css" rel="stylesheet">
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-10">
+
+            <div class="register-card shadow-lg">
+
+                <div class="row g-0">
+
+                    <!-- Left Side -->
+                    <div class="col-lg-5 register-side d-none d-lg-flex">
+
+                        <div class="text-center text-white p-5">
+
+                            <h1 class="fw-bold mb-4">Join Us</h1>
+
+                            <p class="opacity-75">
+                                Create your account and enjoy premium features,
+                                exclusive offers and a seamless experience.
+                            </p>
+
+                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                                 class="img-fluid mt-4"
+                                 style="max-width:220px;">
+                        </div>
+
+                    </div>
+
+                    <!-- Right Side -->
+                    <div class="col-lg-7 bg-white">
+
+                        <div class="p-5">
+
+                            <div class="mb-4">
+                                <h2 class="fw-bold">Create Account</h2>
+                                <p class="text-muted">
+                                    Fill in your information below
+                                </p>
+                            </div>
+
+                            <form asp-action="Register">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                                <div class="form-group">
+                                    <label asp-for="FirstName" class="control-label"></label>
+                                    <input asp-for="FirstName" class="form-control" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="LastName" class="control-label"></label>
+                                    <input asp-for="LastName" class="form-control" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Email" class="control-label"></label>
+                                    <input asp-for="Email" class="form-control" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Address" class="control-label"></label>
+                                    <input asp-for="Address" class="form-control" />
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="UserName" class="control-label"></label>
+                                    <input asp-for="UserName" class="form-control" />
+                                    <span asp-validation-for="UserName" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Password" class="control-label"></label>
+                                    <input asp-for="Password" class="form-control" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="ConfirmPassword" class="control-label"></label>
+                                    <input asp-for="ConfirmPassword" class="form-control" />
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Register" class="btn btn-primary" />
+                                </div>
+                            </form>
+                            <a asp-action="Login" class="text-bg-danger">Login</a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+

@@ -1,7 +1,10 @@
 using AirlineBookingSystem.DataAccess;
 using AirlineBookingSystem.Models;
+using AirlineBookingSystem.Repositories;
 using AirlineBookingSystem.Utilities;
+using AirlineBookingSystem.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace AirlineBookingSystem.Controllers
@@ -11,20 +14,32 @@ namespace AirlineBookingSystem.Controllers
     {
 
         private readonly ApplicationDbContext _context;
-        public HomeController()
+        //private readonly Repository<Hotel> _homeRepository;
+        public HomeController(ApplicationDbContext context)
         {
-            _context = new ApplicationDbContext();
+            //_context = new ApplicationDbContext();
+            _context = context; //new Repository<Hotel>();
         }
-        public IActionResult Index()
+        public  IActionResult Index(string HotelName, int page = 1)
         {
             var Hotel = _context.Hotels.AsQueryable();
-            Hotel = Hotel.Skip(0).Take(3);
-            return View(Hotel);
+            //var Hotel = await _context.GetAllAsync();
+            if (HotelName != null)
+            {
+                Hotel = Hotel.Where(h => h.Name.Contains(HotelName));
+                ViewBag.HotelName = HotelName;
+            }
+            
+            return View(new HomeSearchVM()
+            {
+                Hotels = Hotel,
+            });
         }
 
         public IActionResult About()
         {
             var Hotel = _context.Hotels.AsQueryable();
+            //var Hotel = await _homeRepository.GetAllAsync();
             Hotel = Hotel.Skip(0).Take(3);
             return View(Hotel);
         }

@@ -17,5 +17,9 @@ namespace AirlineBookingSystem.Models
         public int BookingId { get; set; }
         [ForeignKey(nameof(BookingId))]
         public Booking Booking { get; set; }
+
+        public string? SeatNumber { get; set; }
+
+        public string? SeatClass { get; set; }
     }
 }

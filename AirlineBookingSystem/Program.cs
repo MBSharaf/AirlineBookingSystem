@@ -1,3 +1,10 @@
+using AirlineBookingSystem.DataAccess;
+using AirlineBookingSystem.Models;
+using AirlineBookingSystem.Repositories;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+
 namespace AirlineBookingSystem
 {
     public class Program
@@ -8,6 +15,28 @@ namespace AirlineBookingSystem
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
+                ?? throw new InvalidOperationException("Connection String " + "'DefaultConnection' not found. ");
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer(connectionString);
+
+            });
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+            }).AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //Regestier
+            builder.Services.AddScoped<IRepository<Hotel>, Repository<Hotel>>();
+            builder.Services.AddScoped<IRepository<Flight>, Repository<Flight>>();
+            builder.Services.AddScoped<IRepository<Airport>, Repository<Airport>>();
+            builder.Services.AddScoped<IRepository<Ticket>, Repository<Ticket>>();
+
 
             var app = builder.Build();
 
@@ -27,7 +56,7 @@ namespace AirlineBookingSystem
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}")
+                pattern: "{area=Identity}/{controller=Account}/{action=Login}/{id?}")
                 .WithStaticAssets();
 
             app.Run();

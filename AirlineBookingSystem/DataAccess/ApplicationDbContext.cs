@@ -1,10 +1,15 @@
 ﻿using AirlineBookingSystem.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace AirlineBookingSystem.DataAccess
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base (options)
+        {
+
+        }
 
         public DbSet<Airport> Airports { get; set; }
         public DbSet<Flight> Flights { get; set; }
@@ -15,11 +20,11 @@ namespace AirlineBookingSystem.DataAccess
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Data Source=.;Initial catalog = AirlineBookingSystem;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;");
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    base.OnConfiguring(optionsBuilder);
+        //    optionsBuilder.UseSqlServer("Data Source=.;Initial catalog = AirlineBookingSystem;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;");
+        //}
 
         // Relationships
         protected override void OnModelCreating(ModelBuilder modelBuilder)
