@@ -1,7 +1,9 @@
 using AirlineBookingSystem.DataAccess;
 using AirlineBookingSystem.Models;
 using AirlineBookingSystem.Repositories;
+using AirlineBookingSystem.Utilities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -29,13 +31,16 @@ namespace AirlineBookingSystem
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
-            }).AddEntityFrameworkStores<ApplicationDbContext>();
+                options.SignIn.RequireConfirmedEmail = true;
+            }).AddEntityFrameworkStores<ApplicationDbContext>()
+              .AddDefaultTokenProviders();
 
             //Regestier
             builder.Services.AddScoped<IRepository<Hotel>, Repository<Hotel>>();
             builder.Services.AddScoped<IRepository<Flight>, Repository<Flight>>();
             builder.Services.AddScoped<IRepository<Airport>, Repository<Airport>>();
             builder.Services.AddScoped<IRepository<Ticket>, Repository<Ticket>>();
+            builder.Services.AddTransient<IEmailSender, SendEmail>();
 
 
             var app = builder.Build();
