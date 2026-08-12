@@ -1,0 +1,122 @@
+﻿@model Booking
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h4 class="mb-0">Update Booking</h4>
+                </div>
+
+             
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        <input class="form-control" name="Id" value="@Model.Id" hidden />
+                        <!-- Booking Name -->
+                        <div class="mb-3">
+                            <label for="bookingName" class="form-label">
+                                Booking Name
+                            </label>
+                            <input type="datetime"
+                                   id="bookingName"
+                                   name="BookingDate"
+                                   value="@Model.BookingDate"
+                                   class="form-control"
+                                   placeholder="Enter booking date">
+                        </div>
+
+                        <!-- City -->
+                        <div class="mb-3">
+                            <label for="city" class="form-label">
+                                City
+                            </label>
+                            <input type="text"
+                                   id="city"
+                                   name="City"
+                                   value="@Model.NumberOfSeats"
+                                   class="form-control"
+                                   placeholder="Enter city">
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label for="description" class="form-label">
+                                Description
+                            </label>
+                            <textarea id="description"
+                                      name="Description"
+                                      
+                                      class="form-control"
+                                      rows="4"
+                                      placeholder="Enter booking description">@Model.TotalPrice</textarea>
+                        </div>
+
+                        <!-- Rate -->
+                        <div class="mb-3">
+                            <label for="rate" class="form-label">
+                                Rate
+                            </label>
+                            <input type="number"
+                                   id="rate"
+                                   name="Rate"
+                                   value="@Model.IsConfirmed"
+                                   class="form-control"
+                                   placeholder="Enter booking rate"
+                                   min="1"
+                                   max="5"
+                                   step="0.1">
+                        </div>
+
+                        <!-- Address -->
+                        <div class="mb-3">
+                            <label for="address" class="form-label">
+                                Address
+                            </label>
+                            <input type="text"
+                                   id="address"
+                                   name="Address"
+                                   value="@Model.Passenger"
+                                   class="form-control"
+                                   placeholder="Enter booking address">
+                        </div>
+
+                        @* <!-- Image -->
+                        <div class="mb-3">
+                            <label for="ImgageFile" class="form-label">ImgageFile</label>
+                            <input type="file" class="form-control" name="ImageFile" accept="image/*" onchange="previewImage(event)">
+
+                        </div>
+
+                        <div class="mb-3">
+                            <img id="preview"
+                                 src="~/images/BookingImages/@Model.Image"
+                                 alt="Current Image"
+                                 style="max-width: 200px; border:1px solid #ccc; padding:5px; border-radius:10px;" /> *@
+                        @* <br/>
+                        </div> *@
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between">
+                            <a href="/Admin/Bookings" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i>
+                                Back
+                            </a>
+
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-plus-lg"></i>
+                                Update Booking
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+                
+
+
+                       
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

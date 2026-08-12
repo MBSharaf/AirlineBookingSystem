@@ -1,0 +1,128 @@
+﻿@using AirlineBookingSystem.ViewModels
+@model AirportVM
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+    <!-- Create Button -->
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="fas fa-plus me-1"></i> Add Airport
+    </a>
+
+    <!-- Filter Button -->
+    <button class="btn btn-outline-secondary" type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#filterSection">
+        <i class="fas fa-filter me-1"></i> Filter
+    </button>
+
+</div>
+<div class="table-responsive scrollbar">
+    <table class="table table-bordered overflow-hidden align-middle">
+
+        <thead class="table-light">
+            <tr>
+                <th>Name</th>
+                <th>City</th>
+                <th>Code</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+
+</div>
+<!-- Filter Section -->
+<div class="collapse mb-4" id="filterSection">
+    <div class="card card-body">
+
+        <form>
+
+            <div class="row g-3">
+
+                <div class="col-md-4">
+                    <label for="name" class="form-label">Airport Name</label>
+                    <input type="text" name="name" class="form-control"
+                            placeholder="Search by name..." value="@ViewBag.name" /> 
+                </div>
+
+           
+            
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-success w-100">
+                        Apply Filter
+                    </button>
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+
+                    
+    <tbody>
+        @foreach (var item in Model.Airports)
+        {
+            <tr>
+                <td>@item.Name</td>
+
+                <td>@item.City</td>
+                <td>@item.Code</td>
+
+                <td class="text-end">
+                    <div class="dropdown">
+                        <button class="btn btn-link text-dark btn-sm dropdown-toggle"
+                                type="button"
+                                data-bs-toggle="dropdown">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="/Admin/Airports/Edit/@item.Id">Edit</a>
+                            <a class="dropdown-item text-danger" onclick="Delete()" href="/Admin/Airports/Delete/@item.Id">Delete</a>
+                            @* <button type="button"
+                                    class="dropdown-item text-danger"
+                                    onclick="confirmDelete(@item.Id)">
+                                Delete
+                            </button> *@
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination d-flex justify-content-center align-items-center ">
+        <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+            <a class="page-link" href="/Admin/Airports/Index?name=@ViewBag.name&page=@(Model.CurrentPage - 1)" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        @for (var i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item"><a class="page-link @(Model.CurrentPage == i ? "active" : "")" href="/Admin/Airports/Index?name=@ViewBag.name&page=@i">@i</a></li>
+        }
+        <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+            <a class="page-link" href="/Admin/Airports/Index?name=@ViewBag.name&page=@(Model.CurrentPage + 1)" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function Delete() {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to undo this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "Cancel"
+        });
+    }
+</script>
