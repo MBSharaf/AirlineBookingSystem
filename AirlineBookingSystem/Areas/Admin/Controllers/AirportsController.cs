@@ -1,5 +1,6 @@
 ﻿using AirlineBookingSystem.DataAccess;
 using AirlineBookingSystem.Models;
+using AirlineBookingSystem.Repositories;
 using AirlineBookingSystem.Utilities;
 using AirlineBookingSystem.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -11,16 +12,18 @@ namespace AirlineBookingSystem.Areas.Admin.Controllers
     [Authorize(Roles = $"{CD.SUPER_ADMIN_ROLE} , {CD.ADMIN_ROLE}")]
     public class AirportsController : Controller
     {
-        public readonly ApplicationDbContext _context;
+        //public readonly ApplicationDbContext _context;
+        private readonly IRepository<Airport> _airportRepository;
 
-        public AirportsController(ApplicationDbContext context)
+        public AirportsController(IRepository<Airport> airportRepository)
         {
-            _context = context;
+            _airportRepository = airportRepository;
         }
 
-        public IActionResult Index(string name , int page = 1)
+        public async Task<IActionResult> Index(string name , int page = 1)
         {
-            var airports = _context.Airports.AsQueryable();
+            //var airports = _context.Airports.AsQueryable();
+            var airports = await _airportRepository.GetAllAsync();
            if (name != null)
             {
                 airports = airports.Where(a => a.Name.Contains(name));
@@ -44,17 +47,20 @@ namespace AirlineBookingSystem.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Airport airport)
+        public async Task<IActionResult> Create(Airport airport)
         {
-            _context.Airports.Add(airport);
-            _context.SaveChanges();
+            //_context.Airports.Add(airport);
+            await _airportRepository.CreateAsync(airport);
+            //_context.SaveChanges();
+            await _airportRepository.CommitAsync();
             return RedirectToAction(nameof(Index));
         }
         [Authorize(Roles = $"{CD.SUPER_ADMIN_ROLE}")]
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var airport = _context.Airports.FirstOrDefault(a => a.Id == id);
+            //var airport = _context.Airports.FirstOrDefault(a => a.Id == id);
+            var airport = await _airportRepository.GetOneAsync(a => a.Id == id);
             if (airport == null)
             {  return NotFound(); }
 
@@ -63,21 +69,26 @@ namespace AirlineBookingSystem.Areas.Admin.Controllers
         }
         [Authorize(Roles = $"{CD.SUPER_ADMIN_ROLE}")]
         [HttpPost]
-        public IActionResult Edit(Airport airport)
+        public async Task<IActionResult> Edit(Airport airport)
         {
-            _context.Airports.Update(airport);
-            _context.SaveChanges();
+            //_context.Airports.Update(airport);
+           _airportRepository.Update(airport);
+            //_context.SaveChanges();
+            await _airportRepository.CommitAsync();
             return RedirectToAction(nameof(Index));
         }
         [Authorize(Roles = $"{CD.SUPER_ADMIN_ROLE}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var airport = _context.Airports.FirstOrDefault(a => a.Id == id);
+            //var airport = _context.Airports.FirstOrDefault(a => a.Id == id);
+            var airport = await _airportRepository.GetOneAsync(a => a.Id == id);
             if (airport == null)
             { return NotFound(); }
 
-            _context.Airports.Remove(airport);
-            _context.SaveChanges();
+            //_context.Airports.Remove(airport);
+            _airportRepository.Delete(airport);
+            //_context.SaveChanges();
+            await _airportRepository.CommitAsync();
 
             return RedirectToAction(nameof(Index));
         }

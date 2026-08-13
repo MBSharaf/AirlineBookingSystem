@@ -1,5 +1,6 @@
 ﻿using AirlineBookingSystem.DataAccess;
 using AirlineBookingSystem.Models;
+using AirlineBookingSystem.Repositories;
 using AirlineBookingSystem.Services;
 using AirlineBookingSystem.Utilities;
 using AirlineBookingSystem.ViewModels;
@@ -13,18 +14,21 @@ namespace AirlineBookingSystem.Areas.Admin.Controllers
     [Authorize(Roles = $"{CD.SUPER_ADMIN_ROLE} , {CD.ADMIN_ROLE}")]
     public class HotelsController : Controller
     {
-        public readonly ApplicationDbContext _context;
-        private readonly HotelServices _hotelServices = new HotelServices();
+        //public readonly ApplicationDbContext _context;
+        private readonly IRepository<Hotel> _hotelRepository;
 
-        public HotelsController(ApplicationDbContext context)
+        public HotelsController(IRepository<Hotel> hotelRepository)
         {
-            _context = context;
-          
+            _hotelRepository = hotelRepository;
         }
 
-        public IActionResult Index(string name , int page = 1)
+        private readonly HotelServices _hotelServices = new HotelServices();
+
+
+        public async Task<IActionResult> Index(string name , int page = 1)
         {
-            var hotels = _context.Hotels.AsQueryable();
+            //var hotels = _context.Hotels.AsQueryable();
+            var hotels = await _hotelRepository.GetAllAsync();
            if (name != null)
             {
                 hotels = hotels.Where(a => a.Name.Contains(name));
@@ -48,22 +52,25 @@ namespace AirlineBookingSystem.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Hotel hotel, IFormFile ImageFile)
+        public async Task<IActionResult> Create(Hotel hotel, IFormFile ImageFile)
         {
             if (ImageFile != null && ImageFile.Length>0)
             {
               var fileName = _hotelServices.SaveFile(ImageFile);
                 hotel.Image = fileName;
             }
-            _context.Hotels.Add(hotel);
-            _context.SaveChanges();
+            //_context.Hotels.Add(hotel);
+            await _hotelRepository.CreateAsync(hotel);
+            //_context.SaveChanges();
+            await _hotelRepository.CommitAsync();
             return RedirectToAction(nameof(Index));
         }
         [Authorize(Roles = $"{CD.SUPER_ADMIN_ROLE}")]
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var hotel = _context.Hotels.FirstOrDefault(a => a.Id == id);
+            //var hotel = _context.Hotels.FirstOrDefault(a => a.Id == id);
+            var hotel = await _hotelRepository.GetOneAsync(a => a.Id == id);
             if (hotel == null)
             { return NotFound(); }
 
@@ -72,9 +79,10 @@ namespace AirlineBookingSystem.Areas.Admin.Controllers
         }
         [HttpPost]
         [Authorize(Roles = $"{CD.SUPER_ADMIN_ROLE}")]
-        public IActionResult Edit(Hotel hotel, IFormFile ImageFile)
+        public async Task<IActionResult> Edit(Hotel hotel, IFormFile ImageFile)
         {
-            var hotelinDb = _context.Hotels.AsNoTracking().FirstOrDefault(a => a.Id == hotel.Id);
+            //var hotelinDb = _context.Hotels.AsNoTracking().FirstOrDefault(a => a.Id == hotel.Id);
+            var hotelinDb = await _hotelRepository.GetOneAsync(a => a.Id == hotel.Id);
             if (hotelinDb == null)
             { return NotFound(); }
             if (ImageFile != null && ImageFile.Length > 0)
@@ -89,19 +97,24 @@ namespace AirlineBookingSystem.Areas.Admin.Controllers
                 hotel.Image = hotelinDb.Image;
             
             }
-            _context.Hotels.Update(hotel);
-            _context.SaveChanges();
+            //_context.Hotels.Update(hotel);
+            await _hotelRepository.CreateAsync(hotel);
+            //_context.SaveChanges();
+            await _hotelRepository.CommitAsync();
             return RedirectToAction(nameof(Index));
         }
         [Authorize(Roles = $"{CD.SUPER_ADMIN_ROLE}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var hotel = _context.Hotels.FirstOrDefault(a => a.Id == id);
+            //var hotel = _context.Hotels.FirstOrDefault(a => a.Id == id);
+            var hotel = await _hotelRepository.GetOneAsync(a => a.Id == id);
             if (hotel == null)
             { return NotFound(); }
             _hotelServices.RemoveFile(hotel.Image);
-            _context.Hotels.Remove(hotel);
-            _context.SaveChanges();
+            //_context.Hotels.Remove(hotel);
+             await _hotelRepository.CreateAsync(hotel);
+             //_context.SaveChanges();
+             await _hotelRepository.CommitAsync();
 
             return RedirectToAction(nameof(Index));
         }
