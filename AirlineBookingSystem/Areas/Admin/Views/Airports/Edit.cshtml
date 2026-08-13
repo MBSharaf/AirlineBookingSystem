@@ -1,0 +1,65 @@
+﻿@model Airport
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h4 class="mb-0">Update Airport</h4>
+                </div>
+
+                <div class="card-body">
+                    <form asp-action="Edit" method="post">
+                        <input class="form-control" name="Id" value="@Model.Id" hidden />
+                        <div class="mb-3">
+                            <label for="airportName" class="form-label">
+                                Airport Name
+                            </label>
+                            <input type="text"
+                                   id="airportName"
+                                   name="Name"
+                                   class="form-control"
+                                 value="@Model.Name">
+
+                            <span class="text-danger" asp-validation-for="Name"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="city" class="form-label">
+                                City
+                            </label>
+                            <input type="text"
+                                   id="city"
+                                   name="City"
+                                   class="form-control"
+                                   value="@Model.City">
+                            <span class="text-danger" asp-validation-for="City"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="code" class="form-label">
+                                Code
+                            </label>
+                            <input type="text"
+                                   id="code"
+                                   name="Code"
+                                   class="form-control"
+                                   value="@Model.Code">
+                            <span class="text-danger" asp-validation-for="Code"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="/Admin/Airports" class="btn btn-secondary">
+                                Back
+                            </a>
+
+                            <button type="submit" class="btn btn-success">
+                                Update
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

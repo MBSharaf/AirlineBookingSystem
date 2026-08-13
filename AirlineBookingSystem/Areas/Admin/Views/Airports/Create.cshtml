@@ -1,0 +1,64 @@
+﻿@model AirlineBookingSystem.Models.Airport
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h4 class="mb-0">Create Airport</h4>
+                </div>
+
+                <div class="card-body">
+                    <form method="post">
+
+                        <div class="mb-3">
+                            <label for="airportName" class="form-label">
+                                Airport Name
+                            </label>
+                            <input type="text"
+                                   id="airportName"
+                                   name="Name"
+                                   class="form-control"
+                                   placeholder="Enter airport name">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="city" class="form-label">
+                                City
+                            </label>
+                            <input type="text"
+                                   id="city"
+                                   name="City"
+                                  
+                                   class="form-control"
+                                   placeholder="Enter city">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="code" class="form-label">
+                                Code
+                            </label>
+                            <input type="text"
+                                   id="code"
+                                   name="Code"
+                                   
+                                   class="form-control"
+                                   placeholder="Enter airport code">
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="/Admin/Airports" class="btn btn-secondary">
+                                Back
+                            </a>
+
+                            <button type="submit" class="btn btn-primary">
+                                Create
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
