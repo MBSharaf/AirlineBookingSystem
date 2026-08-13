@@ -41,6 +41,7 @@ namespace AirlineBookingSystem
             builder.Services.AddScoped<IRepository<Airport>, Repository<Airport>>();
             builder.Services.AddScoped<IRepository<Ticket>, Repository<Ticket>>();
             builder.Services.AddTransient<IEmailSender, SendEmail>();
+            builder.Services.AddScoped<IRepository<ApplicationUserOtp>, Repository<ApplicationUserOtp>>();
 
 
             var app = builder.Build();

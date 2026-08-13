@@ -19,6 +19,7 @@ namespace AirlineBookingSystem.DataAccess
         public DbSet<RewardAccount> RewardAccounts { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
+        public DbSet<ApplicationUserOtp> ApplicationUserOtps { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{

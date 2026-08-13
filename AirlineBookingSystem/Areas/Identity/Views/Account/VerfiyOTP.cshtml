@@ -1,8 +1,8 @@
 ﻿@using AirlineBookingSystem.ViewModels
-@model LoginVM
+@model VerfiyOTPVM
 
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Verfiy OTP";
 }
 
 <link href="~/css/customer/style.css" rel="stylesheet">
@@ -44,37 +44,23 @@
                             <div class="mb-4">
                                 <h2 class="fw-bold">Login</h2>
                                 <p class="text-muted">
-                                    Fill in your information below
+                                    Verfiy OTP
                                 </p>
                             </div>
 
-                            <form asp-action="Login">
+                            <form asp-action="VerfiyOTP">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
+                                <input asp-for="UserId" hidden />
                                 <div class="form-group">
-                                    <label asp-for="UserNameOrEmail" class="control-label"></label>
-                                    <input asp-for="UserNameOrEmail" class="form-control" />
-                                    <span asp-validation-for="UserNameOrEmail" class="text-danger"></span>
+                                    <label asp-for="OTP" class="control-label"></label>
+                                    <input asp-for="OTP" class="form-control" />
+                                    <span asp-validation-for="OTP" class="text-danger"></span>
                                 </div>
 
                                 <div class="form-group">
-                                    <label asp-for="Password" class="control-label"></label>
-                                    <input asp-for="Password" class="form-control" />
-                                    <span asp-validation-for="Password" class="text-danger"></span>
-                                </div>
-
-                                <div class="form-group">
-                                    <label asp-for="RememberMe" class="control-label"></label>
-                                    <input asp-for="RememberMe" class="form-check-input" />
-                                    <span asp-validation-for="RememberMe" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <input type="submit" value="Login" class="btn btn-primary" />
+                                    <input type="submit" value="Verfiy OTP" class="btn btn-primary" />
                                 </div>
                             </form>
-
-                            <a asp-action="Register" class="text-bg-danger" >Register</a>
-                            <a asp-action="ResendConfirmEmail" class="text-bg-danger">Resend Confirmation Email</a>
                             <a asp-action="ForgetPassword" class="text-bg-danger">Forget Password</a>
                         </div>
 
@@ -90,7 +76,3 @@
 
 </div>
 
-
-@section Scripts {
-    <partial name="_NotificationPartial" />
-}

@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
 
 namespace AirlineBookingSystem.Repositories
 {
     public interface IRepository<T> where T : class
     {
+        Task<EntityEntry<T>> CreateAsync(T entity);
         Task<IEnumerable<T>> GetAllAsync(
 
             Expression<Func<T, bool>>? filter = null,
@@ -19,5 +21,8 @@ namespace AirlineBookingSystem.Repositories
             bool AsTracking = true
 
             );
+        void Update(T entity);
+        void Delete(T entity);
+        Task<int> CommitAsync();
     }
 }

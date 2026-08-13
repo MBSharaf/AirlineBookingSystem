@@ -1,6 +1,7 @@
 ﻿using AirlineBookingSystem.DataAccess;
 using AirlineBookingSystem.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
 using static System.Net.WebRequestMethods;
 
@@ -15,7 +16,10 @@ namespace AirlineBookingSystem.Repositories
             _context = context; //new ApplicationDbContext();
             _dbset = _context.Set<T>();
         }
-
+        public async Task<EntityEntry<T>> CreateAsync(T entity)
+        {
+            return await _dbset.AddAsync(entity);
+        }
         private IQueryable<T> Query(
 
             Expression<Func<T, bool>>? filter = null,
@@ -66,6 +70,26 @@ namespace AirlineBookingSystem.Repositories
         {
             var entity = Query(filter, includes, AsTracking);
             return await entity.FirstOrDefaultAsync();
+        }
+
+        public void Update(T entity)
+        {
+            _dbset.Update(entity);
+        }
+        public void Delete(T entity)
+        {
+            _dbset.Remove(entity);
+        }
+        public async Task<int> CommitAsync()
+        {
+            try
+            {
+                return await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                return -1;
+            }
         }
     }
 }
