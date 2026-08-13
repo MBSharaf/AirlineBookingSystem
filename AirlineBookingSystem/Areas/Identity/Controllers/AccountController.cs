@@ -58,6 +58,7 @@ namespace AirlineBookingSystem.Areas.Identity.Controllers
                 }
                 return View(registerVM);
             }
+             await _userManager.AddToRoleAsync(user, CD.CUSTOMER_ROLE);
 
             // send email 
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -123,6 +124,10 @@ namespace AirlineBookingSystem.Areas.Identity.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home", new { area = CD.CUSTOMER_AREA });
+            }
             return View();
         }
 
@@ -160,7 +165,12 @@ namespace AirlineBookingSystem.Areas.Identity.Controllers
             return RedirectToAction("Index" , "Home" , new { area = CD.CUSTOMER_AREA });
         }
 
-
+        [HttpGet]
+        public async Task<IActionResult> LogOut()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(Login));
+        }
         // reset password
         [HttpGet]
         public IActionResult ForgetPassword()
@@ -251,6 +261,11 @@ namespace AirlineBookingSystem.Areas.Identity.Controllers
             }
 
             return RedirectToAction(nameof(Login));
+        }
+
+        public IActionResult AccessDenied(string userId)
+        {
+            return View();
         }
 
     }

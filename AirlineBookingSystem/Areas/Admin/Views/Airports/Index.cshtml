@@ -1,4 +1,5 @@
-﻿@using AirlineBookingSystem.ViewModels
+﻿@using AirlineBookingSystem.Utilities
+@using AirlineBookingSystem.ViewModels
 @model AirportVM
 
 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -28,34 +29,34 @@
             </tr>
         </thead>
 
-</div>
-<!-- Filter Section -->
-<div class="collapse mb-4" id="filterSection">
-    <div class="card card-body">
+    </div>
+    <!-- Filter Section -->
+    <div class="collapse mb-4" id="filterSection">
+        <div class="card card-body">
 
-        <form>
+            <form>
 
-            <div class="row g-3">
+                <div class="row g-3">
 
-                <div class="col-md-4">
-                    <label for="name" class="form-label">Airport Name</label>
-                    <input type="text" name="name" class="form-control"
-                            placeholder="Search by name..." value="@ViewBag.name" /> 
-                </div>
+                    <div class="col-md-4">
+                        <label for="name" class="form-label">Airport Name</label>
+                        <input type="text" name="name" class="form-control"
+                               placeholder="Search by name..." value="@ViewBag.name" />
+                    </div>
 
            
             
-                <div class="col-md-4 d-flex align-items-end">
-                    <button type="submit" class="btn btn-success w-100">
-                        Apply Filter
-                    </button>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button type="submit" class="btn btn-success w-100">
+                            Apply Filter
+                        </button>
+                    </div>
+
                 </div>
 
-            </div>
-
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 
                     
     <tbody>
@@ -75,15 +76,22 @@
                             <i class="fas fa-ellipsis-h"></i>
                         </button>
 
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="/Admin/Airports/Edit/@item.Id">Edit</a>
-                            <a class="dropdown-item text-danger" onclick="Delete()" href="/Admin/Airports/Delete/@item.Id">Delete</a>
-                            @* <button type="button"
+                        @if (User.Identity.IsAuthenticated && User.IsInRole(CD.SUPER_ADMIN_ROLE))
+                        {
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a class="dropdown-item" href="/Admin/Airports/Edit/@item.Id">Edit</a>
+                                <a class="dropdown-item text-danger" onclick="Delete()" href="/Admin/Airports/Delete/@item.Id">Delete</a>
+                                @* <button type="button"
                                     class="dropdown-item text-danger"
                                     onclick="confirmDelete(@item.Id)">
                                 Delete
                             </button> *@
-                        </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <h3>No Action</h3>
+                        }
                     </div>
                 </td>
             </tr>

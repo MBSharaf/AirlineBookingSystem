@@ -5,42 +5,53 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AirlineBookingSystem.Utilities.initializer
 {
-    public class DbInitializer
+    public class DbInitializer : IDbInitializer
     {
         private readonly ApplicationDbContext _context;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserManager<IdentityRole> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILogger<DbInitializer> _logger;
 
-        public DbInitializer(ApplicationDbContext context, RoleManager<IdentityRole> roleManager, UserManager<IdentityRole> userManager)
+
+
+        public DbInitializer(ApplicationDbContext context, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, ILogger<DbInitializer> logger)
         {
             _context = context;
             _roleManager = roleManager;
             _userManager = userManager;
+            _logger = logger;
         }
 
-        public async Task Initializer() 
+        public async Task InitializerAsync() 
         {
-            if (_context.Database.GetPendingMigrations().Any()) 
+            try
             {
-                _context.Database.Migrate();
-            }
-            if (!_roleManager.Roles.Any()) 
-            {
-                await _roleManager.CreateAsync(new IdentityRole(CD.SUPER_ADMIN_ROLE));
-                await _roleManager.CreateAsync(new IdentityRole(CD.ADMIN_ROLE));
-                await _roleManager.CreateAsync(new IdentityRole(CD.CUSTOMER_ROLE));
-            }
+                if (_context.Database.GetPendingMigrations().Any())
+                {
+                    _context.Database.Migrate();
+                }
+                if (!_roleManager.Roles.Any())
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(CD.SUPER_ADMIN_ROLE));
+                    await _roleManager.CreateAsync(new IdentityRole(CD.ADMIN_ROLE));
+                    await _roleManager.CreateAsync(new IdentityRole(CD.CUSTOMER_ROLE));
+                }
 
 
-            var user = new ApplicationUser()
-            {
-                FirstName = "Super", 
-                LastName = "Admin", 
-                UserName = "SuperAdmin", 
-                Email = "superadmin@gmail.com", 
-                EmailConfirmed = true,
-            };
-            //await _userManager.CreateAsync();
+                var user = new ApplicationUser()
+                {
+                    FirstName = "Super",
+                    LastName = "Admin",
+                    UserName = "SuperAdmin",
+                    Email = "superadmin@gmail.com",
+                    EmailConfirmed = true,
+                };
+                await _userManager.CreateAsync(user, "SuperAdmin@123");
+                await _userManager.AddToRoleAsync(user, CD.SUPER_ADMIN_ROLE);
+            }
+            catch (Exception ex) {
+                _logger.LogError(ex.Message);
+            }
         }
     }
 }

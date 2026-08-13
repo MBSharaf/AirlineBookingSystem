@@ -3,12 +3,14 @@ using AirlineBookingSystem.Models;
 using AirlineBookingSystem.Services;
 using AirlineBookingSystem.Utilities;
 using AirlineBookingSystem.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AirlineBookingSystem.Areas.Admin.Controllers
 {
     [Area(CD.ADMIN_AREA)]
+    [Authorize(Roles = $"{CD.SUPER_ADMIN_ROLE} , {CD.ADMIN_ROLE}")]
     public class HotelsController : Controller
     {
         public readonly ApplicationDbContext _context;
@@ -57,7 +59,7 @@ namespace AirlineBookingSystem.Areas.Admin.Controllers
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
-
+        [Authorize(Roles = $"{CD.SUPER_ADMIN_ROLE}")]
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -69,6 +71,7 @@ namespace AirlineBookingSystem.Areas.Admin.Controllers
             return View(hotel);
         }
         [HttpPost]
+        [Authorize(Roles = $"{CD.SUPER_ADMIN_ROLE}")]
         public IActionResult Edit(Hotel hotel, IFormFile ImageFile)
         {
             var hotelinDb = _context.Hotels.AsNoTracking().FirstOrDefault(a => a.Id == hotel.Id);
@@ -90,7 +93,7 @@ namespace AirlineBookingSystem.Areas.Admin.Controllers
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
-
+        [Authorize(Roles = $"{CD.SUPER_ADMIN_ROLE}")]
         public IActionResult Delete(int id)
         {
             var hotel = _context.Hotels.FirstOrDefault(a => a.Id == id);
